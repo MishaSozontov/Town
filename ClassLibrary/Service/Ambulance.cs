@@ -7,8 +7,8 @@
     {
         public override void ItIsEvent(object sender, MyEventsArgs e)
         {
-            const string OK = "Медики оказали своевременную помощь пострадавшим. Жертвы среди населения предотвращены.\n",
-            Bad = "Скорая не смогла приехать на место происшествия, уровень безопасности упал.\n";
+            const string OK = "Медики оказали своевременную помощь пострадавшим.\n",
+            Bad = "В городе произошло ЧП. Скорая не смогла приехать на место происшествия. Уровень безопасности снизился.\n";
             Town t = (Town)sender;
 
             if (ClassHandler.DoEvent(ref t.SecurityObj, e.Counter))

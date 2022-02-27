@@ -178,16 +178,27 @@ namespace Model
         /// </summary>
         public Town()
         {
-            //подписка служб на события
+            //подписка депортаментов на события
             Subscription(ref emergencyService, ref ReformExtra);
             Subscription(ref depDemographics, ref ReformFertility);
             Subscription(ref depEconomy, ref ReformEconomy);
             Subscription(ref depEducation, ref ReformEducation);
-            Subscription(ref ambulance, ref Epidemic);
+            //подписка служб на события
+            //Пожар
             Subscription(ref fireman, ref Fire);
+            Subscription(ref ambulance, ref Fire);
+            Subscription(ref police, ref Fire);
+            //преступность
             Subscription(ref police, ref Mafia);
+            Subscription(ref ambulance, ref Mafia);
+
+
             Subscription(ref school, ref DegradationEducation);
+
             Subscription(ref bank, ref Inflation);
+
+            Subscription(ref ambulance, ref Epidemic);
+            
 
             //подписка сфер на событие при достижении максимального уровня
             SecurityObj.LevelMax += MaxLevelField;
@@ -241,7 +252,7 @@ namespace Model
         /// </summary>
         public void DoExtraReform()
         {
-            OnEvent(ReformExtra,-1);
+            OnEvent(ReformExtra, -1);
         }
 
         /// <summary>
@@ -261,9 +272,18 @@ namespace Model
         /// <param name="handler">Событие которое вызываем</param>
         private void OnAction(MyEventHandler handler, int Counter)
         {
-            MyEventsArgs e = new(Counter);
-            handler?.Invoke(this, e);
-            History += e.Result;
+            
+            if (handler != null)
+            {
+                Delegate[] delegates = handler.GetInvocationList();
+                string[] res = new string[delegates.Length];
+                foreach (MyEventHandler h in delegates)
+                {
+                    MyEventsArgs e = new(Counter);
+                    h(this, e);
+                    History += e.Result;
+                }
+            }
         }
 
         /// <summary>

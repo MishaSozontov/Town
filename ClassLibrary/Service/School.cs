@@ -8,7 +8,7 @@
         public override void ItIsEvent(object sender, MyEventsArgs e)
         {
             const string OK = "Благодаря усилиям учителей уровень образования повысился.\n",
-                        Bad = "Несмотря на все усилия учителей, уровень образования упал\n";
+                        Bad = "Учителя утонули в отчётах. Уровень образования снизился.\n";
 
             Town t = (Town)sender;
             if (ClassHandler.DoEvent(ref t.EducationObj, e.Counter))
