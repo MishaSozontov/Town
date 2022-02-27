@@ -1,0 +1,118 @@
+﻿<Window
+    x:Class="WpfApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:WpfApp.ViewModels"
+    Title="MainWindow"
+    Width="800"
+    Height="550">
+    <Window.DataContext>
+        <viewmodels:Commands />
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary Source="/View/Resources/Dictionary.xaml" />
+    </Window.Resources>
+    <DockPanel>
+        <!--  Фон контейнера  -->
+        <DockPanel.Background>
+            <ImageBrush ImageSource="/View/Resources/town_background.jpg" />
+        </DockPanel.Background>
+        <TextBlock
+            Grid.ColumnSpan="2"
+            Margin="0,10,0,5"
+            Padding="5"
+            VerticalAlignment="Top"
+            Background="White"
+            DockPanel.Dock="Top"
+            FontSize="20"
+            Style="{StaticResource usually_txtBlock}"
+            Text="{Binding Path=NameTown, Mode=OneWay}"
+            TextAlignment="Center" />
+        <DockPanel
+            Background="White"
+            DockPanel.Dock="Top"
+            LastChildFill="False">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+
+                    <TextBlock Style="{StaticResource usually_txtBlock}" Text="Количество жителей:" />
+                    <TextBox Style="{StaticResource usually_txtBox}" Text="{Binding UnitCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Style="{StaticResource usually_txtBlock}" Text="Уровень безопасности:" />
+                    <TextBox Style="{StaticResource usually_txtBox}" Text="{Binding Security, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource usually_txtBlock}" Text="Уровень жизни:" />
+                    <TextBox Style="{StaticResource usually_txtBox}" Text="{Binding Life, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Delay=250}" />
+                    <TextBlock Style="{StaticResource usually_txtBlock}" Text="Уровень образования:" />
+                    <TextBox Style="{StaticResource usually_txtBox}" Text="{Binding Education, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Delay=250}" />
+
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource usually_txtBlock}" Text="Уровень экономики:" />
+                    <TextBox Style="{StaticResource usually_txtBox}" Text="{Binding Economy, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Delay=250}" />
+                </StackPanel>
+            </StackPanel>
+
+            <Button
+                Height="35"
+                VerticalAlignment="Top"
+                Command="{Binding StartGameDelegateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Content="Новая игра"
+                DockPanel.Dock="Right"
+                Style="{DynamicResource ButtonStyle1}" />
+        </DockPanel>
+        <StackPanel
+            Margin="10"
+            HorizontalAlignment="Center"
+            Background="White"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding FertilityDelegateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Content="Реформа рождаемости"
+                Style="{DynamicResource ButtonStyle1}" />
+            <Button
+                Command="{Binding ExtraDelegateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Content="Реформа экстренных служб"
+                Style="{DynamicResource ButtonStyle1}" />
+            <Button
+                Command="{Binding EducationDelegateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Content="Реформа образования"
+                Style="{DynamicResource ButtonStyle1}" />
+            <Button
+                Command="{Binding EconomyDelegateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Content="Реформа экономики"
+                Style="{DynamicResource ButtonStyle1}" />
+        </StackPanel>
+        <!--  Панель событий  -->
+        <DockPanel LastChildFill="False">
+
+
+            <StackPanel
+                Margin="100,10"
+                Background="White"
+                DockPanel.Dock="Top">
+                <TextBlock Style="{StaticResource usually_txtBlock}" 
+                           Text="Новости:" />
+
+                <TextBox x:Name="textBox_News"
+                    Style="{StaticResource usually_txtBox}"
+                         TextChanged="TextBox_TextChanged"
+                        Width="Auto"
+                        Height="250"
+                        VerticalAlignment="Top"
+                        VerticalScrollBarVisibility="Auto"
+                        Text="{Binding News, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap" />
+
+
+            </StackPanel>
+
+
+
+        </DockPanel>
+    </DockPanel>
+</Window>
