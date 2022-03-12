@@ -2,6 +2,8 @@
 using Prism.Commands;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace WpfApp.ViewModels
@@ -94,13 +96,13 @@ namespace WpfApp.ViewModels
         /// <summary>
         /// Новая игра
         /// </summary>
-        private void StartGame()
+        private async void StartGame()
         {
-            town = new Town()/* { NameTown = "Город N" }*/;
-            
+            town = new Town();
+
             News = "Игра в городе N началась. Удачи!\n";
             town.OnGameEnd += GameEnd;
-            //town.OnMessage += Message;
+            await Task.Run(() => RandomEvent());
             UpdateProperty();
         }
 
@@ -109,7 +111,8 @@ namespace WpfApp.ViewModels
         /// </summary>
         private void EducationReform()
         {
-            if (IsNotNull) DoAction(new Action(town.DoEducationReform));
+            town.DoEducationReform();
+            UpdateProperty();
         }
 
         /// <summary>
@@ -117,34 +120,24 @@ namespace WpfApp.ViewModels
         /// </summary>
         private void FertilityReform()
         {
-            if (IsNotNull) DoAction(new Action(town.DoFertilityReform));
+            town.DoFertilityReform();
+            UpdateProperty();
         }
         /// <summary>
         /// Реформа экономики
         /// </summary>
         private void EconomyReform()
         {
-            if (IsNotNull) DoAction(new Action(town.DoEconomyReform));
+            town.DoEconomyReform();
+            UpdateProperty();
         }
         /// <summary>
         /// Реформа экстренных служб
         /// </summary>
         private void ExtraReform()
         {
-            if (IsNotNull) DoAction(new Action(town.DoExtraReform));
-        }
-        /// <summary>
-        /// Делегат метода действия
-        /// </summary>
-        private delegate void Action();
-        /// <summary>
-        /// Если есть город выполняет действие
-        /// </summary>
-        /// <param name="test"></param>
-        private void DoAction(Action a)
-        {
-            a.Invoke();
-            if (IsNotNull) UpdateProperty();
+            town.DoExtraReform();
+            UpdateProperty();
         }
 
         /// <summary>
@@ -152,17 +145,32 @@ namespace WpfApp.ViewModels
         /// </summary>
         public void UpdateProperty()
         {
-            NameTown = town.NameTown;
-            UnitCount = town.UnitCount + " (" + town.DynamicUnit + ")";
-            Security = town.Security;
-            Life = town.Life;
-            Education = town.Education;
-            Economy = town.Economy;
-            News += town.History;
+            if (IsNotNull)
+            {
+                NameTown = town.NameTown;
+                UnitCount = town.UnitCount + " (" + town.DynamicUnit + ")";
+                Security = town.Security;
+                Life = town.Life;
+                Education = town.Education;
+                Economy = town.Economy;
+                News +=$"День {town.Day++}:\n"+ town.History;
+            }
         }
         #endregion
 
         #region Methods
+        private void RandomEvent()
+        {
+            while (IsNotNull)
+            {
+                Thread.Sleep(5000);
+                if (IsNotNull)
+                {
+                    town.OnRandomEvent(true);
+                    UpdateProperty();
+                }
+            }
+        }
         /// <summary>
         /// Обработчик события конца игры
         /// </summary>

@@ -172,7 +172,7 @@ namespace Model
         private readonly Bank bank;
         #endregion
 
-        #region Constraction
+        #region Constructor
         /// <summary>
         /// Создание нового города
         /// </summary>
@@ -198,7 +198,7 @@ namespace Model
             Subscription(ref bank, ref Inflation);
 
             Subscription(ref ambulance, ref Epidemic);
-            
+
 
             //подписка сфер на событие при достижении максимального уровня
             SecurityObj.LevelMax += MaxLevelField;
@@ -261,9 +261,9 @@ namespace Model
         /// <param name="handler">Основное событие</param>
         private void OnEvent(MyEventHandler handler, int counter)
         {
-            History = $"День {Day++}:\n";
+            History = "";
             OnAction(handler, counter);
-            OnRandomEvent();
+            OnRandomEvent(false);
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace Model
         /// <param name="handler">Событие которое вызываем</param>
         private void OnAction(MyEventHandler handler, int Counter)
         {
-            
+
             if (handler != null)
             {
                 Delegate[] delegates = handler.GetInvocationList();
@@ -289,8 +289,10 @@ namespace Model
         /// <summary>
         /// Метод вызова случайного события
         /// </summary>
-        private void OnRandomEvent()
+        /// <param name="clear">Нужно ли очищать историю города?</param>
+        public void OnRandomEvent(bool clear)
         {
+            if (clear) History = "";
             Random random = new();
             int numberEvent = random.Next(0, 10);
             if (numberEvent == 0)
